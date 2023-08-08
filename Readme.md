@@ -271,3 +271,25 @@ RUN chmode +x entrypoint.sh
 CMD ["/app/entrypoint.sh"]
 ```
 # 55:37
+* Create `entrypoint.sh`
+```
+copy NUL web\entrypoint.sh
+```
+* Add to `entrypoint.sh`. That is a `bash script` not a python script.
+```
+#!/bin/bash
+APP_PORT=${PORT:-8000}
+cd /app/
+/opt/venv/bin/gunicorn --worker-tem-dir /dev/shm django_k8s.wsgi:application --bind "0.0.0.0:${APP_PORT}"
+```
+> * To test that.
+> * Run cd to get the absolute path.
+```
+cd
+```
+> * This is the long way to run django project locally.This do the `entrypoint.sh`.
+> You have to use `Scripts` directory if you are in windows.
+> You have to use `bin` directory if you are in Linux.
+```
+"D:\Django Professional\django-k8s\env\scripts\python" web\manage.py runserver 
+```  
